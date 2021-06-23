@@ -1,10 +1,13 @@
-import React, {Component} from "react";
+import React from "react";
 import {BrowserRouter as Router, Link} from "react-router-dom";
-import {ContactList, Forms} from "./components";
+//import {Forms} from "./Components";
+import ContactsForms from "./Contacts/ContactsForm";
+import ContactList from "./Contacts/ContactList";
+import {AppController} from "./AppController";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-class App extends Component {
+/*class App extends Component {
     constructor() {
         super()
         this.state = {
@@ -26,13 +29,13 @@ class App extends Component {
     }
 
     getContacts(){
-        fetch(`https://contacts-app-aileen.herokuapp.com/contacts?limit=10&skip=${this.state.skip}`)
+        fetch(`http://localhost:4000/contacts?limit=10&skip=${this.state.skip}`)
             .then((response) => response.json())
             .then((contacts) => this.setState({ contacts }))
     }
 
     nextPage(event){
-        /*this.skip=this.skip+10
+        /!*this.skip=this.skip+10
         this.getContacts()
         if (this.state.skip < this.getContacts.length){
             this.setState({
@@ -40,7 +43,7 @@ class App extends Component {
             })
             //this.getContacts()
             console.log("next skip ",this.state.skip)
-        }*/
+        }*!/
         this.getContacts()
         this.setState({
             skip: this.state.skip + this.state.limit
@@ -58,11 +61,11 @@ class App extends Component {
             this.getContacts()
             console.log("prev skip ",this.state.skip)
         }
-        /*this.setState({
+        /!*this.setState({
             skip: this.state.skip - this.state.limit,
         })
         this.getContacts()
-        console.log("prev ",this.state.skip)*/
+        console.log("prev ",this.state.skip)*!/
     }
 
 
@@ -90,6 +93,38 @@ class App extends Component {
             </Router>
         );
     }
+}*/
+
+
+function App() {
+
+    const {state, getContacts, changeContact} = AppController();
+
+    return (
+        <>
+            <Router>
+                <div className="container">
+                    <nav className="navbar navbar-expand-lg navbar bg-light">
+                        <Link to="/" className="navbar-brand">Contacts app</Link>
+                    </nav>
+                    {/*<div>
+                   <button className="btn btn-secondary m-3" onClick={this.prevPage}> Previous Page </button>
+                   <button className="btn btn-secondary m-3" onClick={this.nextPage}> Next Page </button>
+               </div>*/}
+                    <div className="row">
+                        <div className="col-8">
+                            <ContactList updateContact={changeContact} contacts={state.contacts} getContacts={getContacts}/>
+                        </div>
+                        <div className="col-4">
+                                <ContactsForms contact={state} updateContact={changeContact} getContacts={getContacts}/>
+                        </div>
+
+                    </div>
+                </div>
+            </Router>
+        </>
+
+    )
 }
 
 export default App;
